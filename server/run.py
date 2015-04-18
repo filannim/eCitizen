@@ -26,8 +26,12 @@ UPL_FOLDER = os.path.abspath('static')
 ALLOWED_EXTENSIONS = set(['.jpg', '.jpeg', '.png'])
 
 
-def decimal_coord(degrees, minutes, seconds):
-    return degrees + (minutes / 60) + (seconds / 3600)
+def decimal_coord(degrees, minutes, seconds, direction):
+    result = degrees + (minutes / 60) + (seconds / 3600)
+    if direction in ('W', 'S'):
+        return -result
+    else:
+        return result
 
 
 def main():
@@ -81,10 +85,8 @@ def main():
         latitude, longitude = None, None
         try:
             exif_gps = image_exif[gps_dec_tag]
-            latitude = (exif_gps[1], [d[0] for d in exif_gps[2]])
-            longitude = (exif_gps[3], [d[0] for d in exif_gps[4]])
-            print 'Latitude:', latitude
-            print 'Longitude:', longitude
+            latitude = (exif_gps[1], [d[0] / d[1] for d in exif_gps[2]])
+            longitude = (exif_gps[3], [d[0] / d[1] for d in exif_gps[4]])
         except Exception:
             return 'No GPS coordinates found!'
 
@@ -115,8 +117,8 @@ def main():
         curs = conn.cursor()
         category = request.form['category']
         comment = request.form['comment']
-        longitude = decimal_coord(longitude[1][0], longitude[1][1], longitude[1][2])
-        latitude = decimal_coord(latitude[1][0], latitude[1][1], latitude[1][2])
+        longitude = decimal_coord(longitude[1][0], longitude[1][1], longitude[1][2], longitude[0])
+        latitude = decimal_coord(latitude[1][0], latitude[1][1], latitude[1][2], latitude[0])
         username = request.form['username']
         timestamp = datetime.datetime.utcnow()
         records = [(shot_id, category, comment, longitude, latitude, username,
