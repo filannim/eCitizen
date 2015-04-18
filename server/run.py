@@ -109,11 +109,11 @@ def main():
         # Database connection
         conn = sqlite3.connect('../db/snaps.db')
         curs = conn.cursor()
-        category = 'other'
-        comment = 'bla bla'
+        category = request.form['category']
+        comment = request.form['comment']
         longitude = decimal_coord(longitude[1][0], longitude[1][1], longitude[1][2])
         latitude = decimal_coord(latitude[1][0], latitude[1][1], latitude[1][2])
-        username = 'blb'
+        username = request.form['username']
         timestamp = datetime.datetime.utcnow()
         records = [(shot_id, category, comment, longitude, latitude, username,
                     timestamp)]
