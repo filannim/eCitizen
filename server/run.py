@@ -41,9 +41,18 @@ def main():
     app.debug = True
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
 
+    # GENERAL
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+
+    @app.route('/about')
+    def about():
+        return render_template('about.html')
+
     # VISUALISATION
     @app.route('/map')
-    def index():
+    def map():
         # connect to the DB
         conn = sqlite3.connect('../db/snaps.db')
         curs = conn.cursor()
