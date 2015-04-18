@@ -42,18 +42,18 @@ def main():
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
 
     # VISUALISATION
-    @app.route('/')
+    @app.route('/map')
     def index():
         # connect to the DB
         conn = sqlite3.connect('../db/snaps.db')
         curs = conn.cursor()
         curs.execute('SELECT * FROM snaps;')
         records = curs.fetchall()
-        return render_template('index.html', records=records)
+        return render_template('map.html', records=records)
 
     @app.route('/heat')
     def heat():
-	    conn = sqlite3.connect('../db/snaps.db')
+        conn = sqlite3.connect('../db/snaps.db')
         curs = conn.cursor()
         curs.execute('SELECT * FROM snaps;')
         records = curs.fetchall()

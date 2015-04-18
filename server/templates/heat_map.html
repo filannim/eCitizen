@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
     <meta charset="utf-8">
-    <title>Heatmaps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <title>eCitizen: Heat-map</title>
     <style>
       html, body, #map-canvas {
         height: 100%;
@@ -22,76 +26,93 @@
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
     <script>
-// Adding 500 Data Points
-var map, pointarray, heatmap;
+      // Adding data points
+      var map, pointarray, heatmap;
+      var taxiData = [
+        {% for s in records %}
+          new google.maps.LatLng({{s[4]}},{{s[3]}}),
+        {%endfor %}
+      ];
 
-var taxiData = [
-{% for s in records %}
-new google.maps.LatLng({{s[4]}},{{s[3]}}),
-{%endfor %}
- // new google.maps.LatLng(-25.363882,131.044922),
-  //new google.maps.LatLng(-25.263882,131.144922),
-  
-  
-];
+      function initialize() {
+        var mapOptions = {
+          zoom: 14,
+          center: new google.maps.LatLng(53.4793,-2.2479),
+          mapTypeId: google.maps.MapTypeId.SATELLITE
+        };
 
-function initialize() {
-  var mapOptions = {
-    zoom: 13,
-    center: new google.maps.LatLng(53.4793,-2.2479),
-    mapTypeId: google.maps.MapTypeId.SATELLITE
-  };
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
 
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+        var pointArray = new google.maps.MVCArray(taxiData);
 
-  var pointArray = new google.maps.MVCArray(taxiData);
+        heatmap = new google.maps.visualization.HeatmapLayer({
+          data: pointArray
+        });
 
-  heatmap = new google.maps.visualization.HeatmapLayer({
-    data: pointArray
-  });
+        heatmap.setMap(map);
+      }
 
-  heatmap.setMap(map);
-}
+      function toggleHeatmap() {
+        heatmap.setMap(heatmap.getMap() ? null : map);
+      }
 
-function toggleHeatmap() {
-  heatmap.setMap(heatmap.getMap() ? null : map);
-}
+      function changeGradient() {
+        var gradient = [
+          'rgba(0, 255, 255, 0)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(0, 191, 255, 1)',
+          'rgba(0, 127, 255, 1)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'
+        ]
+        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+      }
 
-function changeGradient() {
-  var gradient = [
-    'rgba(0, 255, 255, 0)',
-    'rgba(0, 255, 255, 1)',
-    'rgba(0, 191, 255, 1)',
-    'rgba(0, 127, 255, 1)',
-    'rgba(0, 63, 255, 1)',
-    'rgba(0, 0, 255, 1)',
-    'rgba(0, 0, 223, 1)',
-    'rgba(0, 0, 191, 1)',
-    'rgba(0, 0, 159, 1)',
-    'rgba(0, 0, 127, 1)',
-    'rgba(63, 0, 91, 1)',
-    'rgba(127, 0, 63, 1)',
-    'rgba(191, 0, 31, 1)',
-    'rgba(255, 0, 0, 1)'
-  ]
-  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-}
+      function changeRadius() {
+        heatmap.set('radius', heatmap.get('radius') ? null : 100);
+      }
 
-function changeRadius() {
-  heatmap.set('radius', heatmap.get('radius') ? null : 20);
-}
+      function changeOpacity() {
+        heatmap.set('opacity', heatmap.get('opacity') ? null : 0.3);
+      }
 
-function changeOpacity() {
-  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.3);
-}
-
-google.maps.event.addDomListener(window, 'load', initialize);
-
+      google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
 
   <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">eCitizen</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/map">map</a></li>
+            <li class="active"><a href="#">heat map</a></li>
+            <li><a href="/about">about</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    
     <div id="panel">
       <button onclick="toggleHeatmap()">Toggle Heatmap</button>
       <button onclick="changeGradient()">Change gradient</button>
@@ -99,5 +120,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
       <button onclick="changeOpacity()">Change opacity</button>
     </div>
     <div id="map-canvas"></div>
+    
+    <div class="navbar-inverse navbar-fixed-bottom">
+      <div class="inner" style="text-align: center; color: white;">
+        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+      </div>
+    </div>  
+
   </body>
 </html>
