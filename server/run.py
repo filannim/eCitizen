@@ -40,7 +40,12 @@ def main():
     # VISUALISATION
     @app.route('/')
     def index():
-        return render_template('index.html')
+        # connect to the DB
+        conn = sqlite3.connect('../db/snaps.db')
+        curs = conn.cursor()
+        curs.execute('SELECT * FROM snaps;')
+        records = curs.fetchall()
+        return render_template('index.html', records=records)
 
     @app.route('/heat')
     def heat():
@@ -106,7 +111,6 @@ def main():
                                 shot_id), "JPEG")
 
         # add a record to the DB
-        # Database connection
         conn = sqlite3.connect('../db/snaps.db')
         curs = conn.cursor()
         category = request.form['category']
