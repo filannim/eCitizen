@@ -18,8 +18,6 @@
     <script type="text/javascript">
       function initialize() {
         var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-		var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-		
 		var marker1 = new google.maps.Marker({
 			position: myLatlng,
 			title:"Hello World!"
@@ -37,8 +35,7 @@
 
 		// To add the marker to the map, call setMap();
 		marker1.setMap(map);
-		//Second mock datapoint
-		var myLatlng2 = new google.maps.LatLng(-25.463882,131.144922);
+
 		var marker2 = new google.maps.Marker({
 			position: myLatlng2,
 			title:"Hello World 2!"
@@ -54,6 +51,7 @@
 
 
 		var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+		var myLatlng2 = new google.maps.LatLng(-25.463882,131.144922);
 		var mapOptions = {
 			zoom: 12,
 			center: myLatlng
