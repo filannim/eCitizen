@@ -1,11 +1,67 @@
-<html>
-    <head>
-        <title>Test</title>
-    </head>
-    <body>
-        <form enctype="multipart/form-data" method="post" action="/upload">
-            <p>Picture: <input type="file" name="shot_file"></p>
-            <p><input type="submit" value="upload" /></p>
-        </form>
-    </body>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Upload a picture</title>
+</head>
+<body class="gradient">
+    <div class="container-fluid">
+        <div class="page-header"><h1>Report your problem below: </h1></div>
+        <section>
+            <form enctype="multipart/form-data" method="post" action="/upload">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-lg-8">
+                            <select name="category" id="category">
+                              <option value="graffiti">Graffiti</option>
+                              <option value="broken_streets">Broken Streets</option>
+                              <option value="broken_labels">Broken labels</option>
+                              <option value="fire">Fire</option>
+                              <option value="lighting">Lighting</option>
+                              <option value="garbage">Garbage</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-lg-4">
+                            <label for="username">User name *:</label>
+                            <input type="text" name="username" class="form-control" id="username" required />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4">
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control" rows="5" name="comment" id="comment"></textarea>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-lg-4">
+                            <label for="latitude">Latitude:</label>
+                            <input type="text" class="form-control" id="latitude" name="latitude" disabled />
+                            <label for="longtitude">Longitude:</label>
+                            <input type="text" class="form-control" id="longtitude" name="longtitude" disabled />
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-lg-8">
+                            <label for="shot_file">Add picture:</label>
+                            <input type="file" name="shot_file" id="shot_file" />
+                            <br />
+                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="button" class="btn btn">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</body>
 </html>
