@@ -11,15 +11,23 @@
 #
 #   For details, just contact us! ;)
 
+from __future__ import division
+
+import datetime
 from PIL import Image
+import sqlite3
 import os
+from os.path import splitext as splitfilename
 
 from flask import Flask, render_template, redirect, url_for, request
-from werkzeug import secure_filename
 
 
-UPL_FOLDER = os.path.abspath('../pictures')
+UPL_FOLDER = os.path.abspath('static')
 ALLOWED_EXTENSIONS = set(['.jpg', '.jpeg', '.png'])
+
+
+def decimal_coord(degrees, minutes, seconds):
+    return degrees + (minutes / 60) + (seconds / 3600)
 
 
 def main():
@@ -49,37 +57,69 @@ def main():
         if not shot:
             return 'Picture unreadable!'
         image = Image.open(shot)
+        image_exif = image._getexif()
+        orientation = image_exif[274]
+        if orientation == 8:
+            image = image.rotate(90)
+        elif orientation == 3:
+            image = image.rotate(180)
+        elif orientation == 6:
+            image = image.rotate(-90)
 
-        # check for extension
-        shot_name, shot_extension = os.path.splitext(shot.filename)
+        # check the extension
+        shot_name, shot_extension = splitfilename(shot.filename)
         if shot_extension.lower() not in ALLOWED_EXTENSIONS:
             return '.{} extension not allowed!'.format(shot_extension.upper())
 
-        # check for GPS coordinates
+        # check the GPS coordinates
         gps_dec_tag = 34853
-        gps_latitude, gps_longitude = None, None
+        latitude, longitude = None, None
         try:
-            exif_gps = image._getexif()[gps_dec_tag]
-            gps_latitude = (exif_gps[1], exif_gps[2])
-            gps_longitude = (exif_gps[3], exif_gps[4])
-            print 'Latitude:', gps_latitude
-            print 'Longitude:', gps_longitude
+            exif_gps = image_exif[gps_dec_tag]
+            latitude = (exif_gps[1], [d[0] for d in exif_gps[2]])
+            longitude = (exif_gps[3], [d[0] for d in exif_gps[4]])
+            print 'Latitude:', latitude
+            print 'Longitude:', longitude
         except Exception:
             return 'No GPS coordinates found!'
 
-        # store the picture
-        shot_name = secure_filename(shot.filename)
-        shot.save(os.path.join(app.config['UPL_FOLDER'], shot_name))
+        # Next Snap ID
+        # Search for the maximum ID in the upload folder and increment it by 1.
+        shot_id = -1
+        for filename in os.listdir(app.config['UPL_FOLDER']):
+            try:
+                filename = int(splitfilename(filename)[0])
+            except ValueError:
+                continue
+            if filename > shot_id:
+                shot_id = filename
+        shot_id = str(shot_id + 1) + ".jpg"
 
-        # store its coordinates
+        # store the picture
+        image.save(os.path.join(app.config['UPL_FOLDER'], shot_id), "JPEG")
 
         # store its thumbnail
         scaling = image.size[1] / 100
-        thumb_size = (image.size[0] / scaling, 100)
+        thumb_size = (int(image.size[0] / scaling), 100)
         image.thumbnail(thumb_size, Image.ANTIALIAS)
         image.save(os.path.join(app.config['UPL_FOLDER'], 'thumbnails',
-                                shot.filename),
-                   "JPEG")
+                                shot_id), "JPEG")
+
+        # add a record to the DB
+        # Database connection
+        conn = sqlite3.connect('../db/snaps.db')
+        curs = conn.cursor()
+        category = 'other'
+        comment = 'bla bla'
+        longitude = decimal_coord(longitude[1][0], longitude[1][1], longitude[1][2])
+        latitude = decimal_coord(latitude[1][0], latitude[1][1], latitude[1][2])
+        username = 'blb'
+        timestamp = datetime.datetime.utcnow()
+        records = [(shot_id, category, comment, longitude, latitude, username,
+                    timestamp)]
+        curs.executemany('INSERT INTO snaps VALUES (?,?,?,?,?,?,?)', records)
+        conn.commit()
+        conn.close()
 
         return redirect(url_for('thanks'))
 
