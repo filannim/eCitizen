@@ -88,7 +88,6 @@
   </head>
 
   <body>
-    <!-- NAVBAR -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -102,26 +101,26 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/upload_shot"><span class="label label-success"><strong>+</strong></span> upload a picture</a></li>
-            <li class="active"><a href="#">map</a></li>
+          <li><a href="/upload_shot">report <span class="label label-success label-as-badge">+1</span></a></li>
+            <li class="active"><a href="/map">map</a></li>
             <li><a href="/heat">heat map</a></li>
-			<li><a href="/stats">statistics</a></li>
-			<li><a href="/best_users">best users</a></li>
-            <li><!--- dropdown menu-->
-     <div class="col-xs-12 col-sm-6 col-lg-8" style = "margin-top:17px; border-radius:5px;">
-       <select onChange = "updateFilter()" name="category" style = "border-radius:5px;"id="category">
-         <option value="all">All</option>
-         <option value="graffiti">Graffiti</option>
-         <option value="broken_streets">Broken Streets</option>
-         <option value="broken_labels">Broken labels</option>
-         <option value="fire">Fire</option>
-         <option value="lighting">Lighting</option>
-         <option value="garbage" style = "border-radius:5px;">Garbage</option>
-       </select>
-     </div>
-    <!--- dropdown menu--></li>
+            <li><a href="/stats">statistics</a></li>
+            <li><a href="/best_users">best users</a></li>
+            <li>
+              <div class="col-xs-12 col-sm-6 col-lg-8" style = "margin-top:17px; border-radius:5px;">
+               <select onChange = "updateFilter()" name="category" style = "border-radius:5px;"id="category">
+                 <option value="all">All</option>
+                 <option value="graffiti">Graffiti</option>
+                 <option value="broken_streets">Broken Streets</option>
+                 <option value="broken_labels">Broken labels</option>
+                 <option value="fire">Fire</option>
+                 <option value="lighting">Lighting</option>
+                 <option value="garbage" style = "border-radius:5px;">Garbage</option>
+               </select>
+              </div>
+            </li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
     
