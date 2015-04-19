@@ -53,7 +53,11 @@ def main():
 
     @app.route('/heat')
     def heat():
-        return render_template('heat_map.html')
+	    conn = sqlite3.connect('../db/snaps.db')
+        curs = conn.cursor()
+        curs.execute('SELECT * FROM snaps;')
+        records = curs.fetchall()
+        return render_template('heat_map.html', records=records)
 
     # UPLOAD
     @app.route('/upload_shot')
