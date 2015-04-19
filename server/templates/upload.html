@@ -6,7 +6,49 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+<script>
+    /* GET COORDINATES */
+    function codeLatLngfromclick(event) {
+        var lat = event.latLng.lat();
+        var lng = event.latLng.lng();
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lng;
+    }
+
+    /* GOOGLE MAPS */
+    function initialize() {
+        var mapProp = {
+            center:new google.maps.LatLng(0,0), zoom:5,
+            mapTypeId:google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        
+        if(navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        marker = new google.maps.Marker({
+                map: map,
+                position: pos
+            });
+
+            map.setCenter(pos);
+            mapLoaded = 1;
+        }, function() {
+                defaultMap();
+            });
+        }
+        else
+        {
+            defaultMap();
+        }
+
+        google.maps.event.addListener(map, 'click', codeLatLngfromclick);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+    navigator.geolocation.getCurrentPosition
+</script>
     <style>
       html, body, #map-canvas {
         height: 100%;
@@ -22,6 +64,28 @@
         background-color: #fff;
         padding: 5px;
         border: 1px solid #999;
+      }
+      .btn-file {
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        background: red;
+        cursor: inherit;
+        display: block;
+      }
+      input[readonly] {
+        background-color: white !important;
+        cursor: text !important;
       }
     </style>
     <title>eCitizen: Post a picture</title>
@@ -43,64 +107,74 @@
           <li><a href="/upload_shot"><span class="label label-success"><strong>+</strong></span> upload a picture</a></li>
             <li><a href="/map">map</a></li>
             <li><a href="/heat">heat map</a></li>
-			<li><a href="/stats">statistics</a></li>
-			<li><a href="/best_users">best users</a></li>
+            <li><a href="/stats">statistics</a></li>
+            <li><a href="/best_users">best users</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
     <div class="container-fluid">
-        <div class="page-header" style="margin-top:80px"><h1>Report your problem below: </h1></div>
+        <div class="page-header" style="margin-top:80px"><h1>Share a problem</h1></div>
         <section>
-            <form enctype="multipart/form-data" method="post" action="/upload">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-lg-8">
-                            <select name="category" id="category">
-                              <option value="graffiti">Graffiti</option>
-                              <option value="broken_streets">Broken Streets</option>
-                              <option value="broken_labels">Broken labels</option>
-                              <option value="fire">Fire</option>
-                              <option value="lighting">Lighting</option>
-                              <option value="garbage">Garbage</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <br />
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-lg-4">
-                            <label for="username">User name *:</label>
-                            <input type="text" name="username" class="form-control" id="username" required />
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-4">
-                            <label for="comment">Comment:</label>
-                            <textarea class="form-control" rows="5" name="comment" id="comment"></textarea>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-lg-4">
-                            <label for="latitude">Latitude:</label>
-                            <input type="text" class="form-control" id="latitude" name="latitude" disabled />
-                            <label for="longtitude">Longitude:</label>
-                            <input type="text" class="form-control" id="longitude" name="longitude" disabled />
-                        </div>
-
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-lg-8">
-                            <label for="shot_file">Add picture:</label>
-                            <input type="file" name="shot_file" id="shot_file" />
-                            <br />
-                            <button type="submit" class="btn btn-primary">Add</button>
-                            <button type="button" class="btn btn">Clear</button>
-                        </div>
-                    </div>
+          <form enctype="multipart/form-data" method="post" action="/upload">
+            <div class="form-group">
+              <div class="col-xs-12 col-sm-6 col-lg-6">
+                <div>
+                  <label for="shot_file">Picture:</label>
+                  <div class="input-group">
+                    <span class="input-group-btn">
+                      <span class="btn btn-primary btn-file">
+                      Browse&hellip; <input type="file" name="shot_file" id="shot_file" required>
+                      </span>
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                  </div>
+                </div><br />
+                <div>
+                  <label for="username">Your username*:</label>
+                  <input type="text" name="username" class="form-control" id="username" required /><br />
                 </div>
-            </form>
-        </section>
+                <div>
+                  <label for="username">Category*:</label>
+                  <select name="category" id="category" class="form-control">
+                    <option value="graffiti">Graffiti</option>
+                    <option value="broken_streets">Broken Streets</option>
+                    <option value="broken_labels">Broken labels</option>
+                    <option value="fire">Fire</option>
+                    <option value="lighting">Lighting</option>
+                    <option value="garbage">Garbage</option>
+                  </select><br />
+                </div>
+                <div>
+                  <label for="comment">Comment:</label>
+                  <textarea class="form-control" rows="5" name="comment" id="comment"></textarea><br />
+                </div>
+              </div>
+              
+              <div class="col-xs-12 col-sm-6 col-lg-6">
+                <div>
+                  <label for="googleMap">Map:</label>
+                  <div id="googleMap" class="col-xs-12" style="height:290px;"></div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 col-sm-6 col-lg-6">
+                  <label for="latitude"><small>Latitude:</small></label>
+                    <input type="text" class="form-control" id="latitude" name="latitude" disabled />
+                  </div>
+                  <div class="col-xs-6 col-sm-6 col-lg-6">
+                    <label for="longtitude"><small>Longitude:</small></label>
+                    <input type="text" class="form-control" id="longitude" name="longitude" disabled />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <button type="submit" class="btn btn-success">Share</button>
+              <button type="button" class="btn btn">Clear</button>
+            </div>
+          </div>
+        </form>
+      </section>
     </div>
 	<div class="navbar-inverse navbar-fixed-bottom">
       <div class="inner" style="text-align: center; color: white;">
