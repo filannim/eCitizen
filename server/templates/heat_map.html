@@ -86,6 +86,30 @@
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
+	  function leaveChange() {
+	  var taxiData = [];
+        {% for s in records %}
+		if("{{s[1]}}"==document.getElementById("category").value || "all"==document.getElementById("category").value)
+			taxiData.push(new google.maps.LatLng({{s[4]}},{{s[3]}}));
+        {%endfor %}
+      
+	  var mapOptions = {
+          zoom: 14,
+          center: new google.maps.LatLng(53.4793,-2.2479),
+          mapTypeId: google.maps.MapTypeId.SATELLITE
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+
+        var pointArray = new google.maps.MVCArray(taxiData);
+
+        heatmap = new google.maps.visualization.HeatmapLayer({
+          data: pointArray
+        });
+
+        heatmap.setMap(map);
+}
     </script>
   </head>
 
@@ -119,6 +143,15 @@
       <button onclick="changeGradient()">Change gradient</button>
       <button onclick="changeRadius()">Change radius</button>
       <button onclick="changeOpacity()">Change opacity</button>
+	  <select name="category" id="category" onchange="leaveChange()">
+								<option value="all">All</option>
+                              <option value="graffiti">Graffiti</option>
+                              <option value="broken_streets">Broken Streets</option>
+                              <option value="broken_labels">Broken labels</option>
+                              <option value="fire">Fire</option>
+                              <option value="lighting">Lighting</option>
+                              <option value="garbage">Garbage</option>
+                            </select>
     </div>
     <div id="map-canvas"></div>
     
