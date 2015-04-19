@@ -12,8 +12,6 @@
 #   For details, just contact us! ;)
 
 from __future__ import division
-from braintree.test.nonces import Nonces
-import braintree
 import datetime
 from PIL import Image
 import sqlite3
@@ -21,7 +19,7 @@ import os
 from os.path import splitext as splitfilename
 
 from flask import Flask, render_template, redirect, url_for, request
-
+import braintree
 
 UPL_FOLDER = os.path.abspath('static')
 ALLOWED_EXTENSIONS = set(['.jpg', '.jpeg', '.png'])
@@ -42,12 +40,9 @@ def main():
     app.debug = False
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
 
-    braintree.Configuration.configure(
-    braintree.Environment.Sandbox,
-    '3tcypjcppzymsqf2',
-    'hvxbq8zf85jbdzr4',
-    '3094158c6893e98caa71d411e9950a22'
-)
+    braintree.Configuration.configure(braintree.Environment.Sandbox,
+                                      '3tcypjcppzymsqf2', 'hvxbq8zf85jbdzr4',
+                                      '3094158c6893e98caa71d411e9950a22')
 
     # GENERAL
     @app.route('/')
@@ -93,30 +88,10 @@ def main():
         maximum = sum((r[1] for r in records))
         title_category = category.replace('_', ' ').title()
         return render_template('contributors.html', category=title_category,
-                               records=records, maximum=maximum, selcat=category)
+                               records=records, maximum=maximum,
+                               selcat=category)
 
-	#----------------------------------
-    #BEST USERS
-    @app.route("/client_token", methods=["GET"])
-    def client_token():
-        return braintree.ClientToken.generate()
-		
-    @app.route('/token')
-    def token():
-       token = client_token()
-       return render_template('requestToken.html',token=token)
-    
-    @app.route("/purchases", methods=["POST"])
-    def create_purchase():
-        nonce = request.form["payment_method_nonce"]
-        result = braintree.Transaction.sale({"amount": "10.00","payment_method_nonce": nonce})
-		
-        return "Thank you"
-
-    # e.g f28w
-    #----------------------------------						   
-							   
-							   
+    # BRAINTREE APIs
     @app.route('/stats')
     def stats():
         conn = sqlite3.connect('../db/snaps.db')
@@ -124,6 +99,22 @@ def main():
         curs.execute('SELECT * FROM snaps;')
         records = curs.fetchall()
         return render_template('stats.html', records=records)
+
+    @app.route("/client_token", methods=["GET"])
+    def client_token():
+        return braintree.ClientToken.generate()
+
+    @app.route('/token')
+    def token():
+        token = client_token()
+        return render_template('requestToken.html', token=token)
+
+    @app.route("/purchases", methods=["POST"])
+    def create_purchase():
+        nonce = request.form["payment_method_nonce"]
+        braintree.Transaction.sale({"amount": "10.00",
+                                    "payment_method_nonce": nonce})
+        return "Thank you"
 
     # UPLOAD
     @app.route('/upload_shot')
@@ -136,9 +127,10 @@ def main():
         if not shot:
             return 'Picture unreadable!'
         image = Image.open(shot)
+
         try:
             image_exif = image._getexif()
-            
+
             orientation = image_exif[274]
             if orientation == 8:
                 image = image.rotate(90)
@@ -150,7 +142,7 @@ def main():
             # check the extension
             shot_name, shot_extension = splitfilename(shot.filename)
             if shot_extension.lower() not in ALLOWED_EXTENSIONS:
-                return '.{} extension not allowed!'.format(shot_extension.upper())
+                return '.{} format not allowed!'.format(shot_extension.upper())
 
             # check the GPS coordinates
             gps_dec_tag = 34853
