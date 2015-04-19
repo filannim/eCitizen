@@ -23,6 +23,17 @@
         padding: 5px;
         border: 1px solid #999;
       }
+      body {
+        padding-top: 70px;
+      }
+      .jumbotron {
+        text-align: center;
+        background-color: transparent;
+      }
+      .jumbotron .btn {
+        padding: 14px 24px;
+        font-size: 21px;
+      }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
     <script>
@@ -115,7 +126,9 @@
     </nav>
 
     <!-- Docs page layout -->
-    <img width="100%" style="padding-bottom: 25px" src="/static/gfx/logo.png" />
+    <div class="jumbotron" style="">
+      <img class="img-rounded" height="400" src="/static/gfx/logo.png" />
+    </div>
     
     <div class="navbar-inverse navbar-fixed-bottom">
       <div style="text-align: center; color: white;">
