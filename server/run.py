@@ -58,6 +58,14 @@ def main():
         curs.execute('SELECT * FROM snaps;')
         records = curs.fetchall()
         return render_template('heat_map.html', records=records)
+		
+	@app.route('/stats')
+    def stats():
+        conn = sqlite3.connect('../db/snaps.db')
+        curs = conn.cursor()
+        curs.execute('SELECT * FROM snaps;')
+        records = curs.fetchall()
+        return render_template('stats.html', records=records)
 
     # UPLOAD
     @app.route('/upload_shot')
