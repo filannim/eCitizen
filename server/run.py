@@ -84,10 +84,10 @@ def main():
         if category != 'all':
             query = str('SELECT username, COUNT(*) FROM snaps WHERE ' +
                         'category="{}" GROUP BY username ORDER BY ' +
-                        'username;').format(category)
+                        'COUNT(*) DESC;').format(category)
         else:
             query = str('SELECT username, COUNT(*) FROM snaps GROUP BY ' +
-                        'username ORDER BY username;')
+                        'username ORDER BY COUNT(*) DESC;')
         curs.execute(query)
         records = curs.fetchall()
         maximum = sum((r[1] for r in records))
@@ -136,8 +136,9 @@ def main():
         if not shot:
             return 'Picture unreadable!'
         image = Image.open(shot)
-        image_exif = image._getexif()
-        if(image_exif!=None and len(image_exif) >= 274):
+        try:
+            image_exif = image._getexif()
+            
             orientation = image_exif[274]
             if orientation == 8:
                 image = image.rotate(90)
@@ -146,15 +147,14 @@ def main():
             elif orientation == 6:
                 image = image.rotate(-90)
 
-        # check the extension
-        shot_name, shot_extension = splitfilename(shot.filename)
-        if shot_extension.lower() not in ALLOWED_EXTENSIONS:
-            return '.{} extension not allowed!'.format(shot_extension.upper())
+            # check the extension
+            shot_name, shot_extension = splitfilename(shot.filename)
+            if shot_extension.lower() not in ALLOWED_EXTENSIONS:
+                return '.{} extension not allowed!'.format(shot_extension.upper())
 
-        # check the GPS coordinates
-        gps_dec_tag = 34853
-        latitude, longitude = None, None
-        try:
+            # check the GPS coordinates
+            gps_dec_tag = 34853
+            latitude, longitude = None, None
             exif_gps = image_exif[gps_dec_tag]
             latitude = (exif_gps[1], [d[0] / d[1] for d in exif_gps[2]])
             longitude = (exif_gps[3], [d[0] / d[1] for d in exif_gps[4]])
