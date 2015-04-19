@@ -12,7 +12,7 @@
 #   For details, just contact us! ;)
 
 from __future__ import division
-
+import braintree
 import datetime
 from PIL import Image
 import sqlite3
@@ -87,6 +87,23 @@ def main():
         return render_template('contributors.html', category=title_category,
                                records=records, maximum=maximum, selcat=category)
 
+	#----------------------------------
+    braintree.Configuration.configure(braintree.Environment.Sandbox,merchant_id="kwsnpry73kzvkmhv",public_key="swryh52r9mbd9xft",private_key="8ad4a43232854dc36472afebe2b1e0b3")
+    #BEST USERS
+    @app.route("/client_token", methods=["GET"])
+    def client_token():
+        return braintree.ClientToken.generate()
+    
+    @app.route("/purchases", methods=["POST"])
+    def create_purchase():
+        nonce = request.form["payment_method_nonce"]
+        result = braintree.Transaction.sale({"amount": "10.00","payment_method_nonce": nonce})
+        return "Thank you!"
+
+    # e.g f28w
+    #----------------------------------						   
+							   
+							   
     @app.route('/stats')
     def stats():
         conn = sqlite3.connect('../db/snaps.db')

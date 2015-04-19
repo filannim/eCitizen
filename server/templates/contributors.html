@@ -72,7 +72,7 @@
     <h2>{{category}}</h2>
      <div style="margin-left:20px">
      {% for user in records %}
-     {{user[0]}}
+     {{user[0]}} <a href="client_token"><input type="image"  style="position: relative; left:10px; top:10px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" class="paypalbtn" /></a>
      <div class="progress">
         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{user[1]*100/maximum|int}}" aria-valuemin="0" aria-valuemax="100" style="width: {{user[1]*100/maximum|int}}%;">{{user[1]}} posts
         </div>
