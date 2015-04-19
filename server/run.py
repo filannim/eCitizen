@@ -12,6 +12,7 @@
 #   For details, just contact us! ;)
 
 from __future__ import division
+from braintree.test.nonces import Nonces
 import braintree
 import datetime
 from PIL import Image
@@ -40,6 +41,13 @@ def main():
     app.config['UPL_FOLDER'] = UPL_FOLDER
     app.debug = True
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
+
+    braintree.Configuration.configure(
+    braintree.Environment.Sandbox,
+    '3tcypjcppzymsqf2',
+    'hvxbq8zf85jbdzr4',
+    '3094158c6893e98caa71d411e9950a22'
+)
 
     # GENERAL
     @app.route('/')
@@ -88,7 +96,6 @@ def main():
                                records=records, maximum=maximum, selcat=category)
 
 	#----------------------------------
-    braintree.Configuration.configure(braintree.Environment.Sandbox,merchant_id="kwsnpry73kzvkmhv",public_key="swryh52r9mbd9xft",private_key="8ad4a43232854dc36472afebe2b1e0b3")
     #BEST USERS
     @app.route("/client_token", methods=["GET"])
     def client_token():
