@@ -68,6 +68,10 @@ def main():
         records = curs.fetchall()
         return render_template('heat_map.html', records=records)
 
+
+        	
+	
+	
     @app.route('/stats')
     def stats():
         conn = sqlite3.connect('../db/snaps.db')
@@ -146,9 +150,20 @@ def main():
                     timestamp)]
         curs.executemany('INSERT INTO snaps VALUES (?,?,?,?,?,?,?)', records)
         conn.commit()
+        curs.execute('SELECT '+category+' from TopContributors where username='+username)
+        records = curs.fetchall()
+        cat = 0
+        for r in records:
+            cat = r[0]+1
+        curs.execute("UPDATE TopContributors SET "+category+"=? WHERE username=?", (cat, username))        
+        conn.commit()
         conn.close()
 
         return redirect(url_for('thanks'))
+    
+	
+		
+	
 
     @app.route('/thanks')
     def thanks():
