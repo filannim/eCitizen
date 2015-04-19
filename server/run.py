@@ -37,7 +37,7 @@ def main():
     # Web server initialisation
     app = Flask("boo")
     app.config['UPL_FOLDER'] = UPL_FOLDER
-    app.debug = False
+    app.debug = True
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
 
     braintree.Configuration.configure(braintree.Environment.Sandbox,
@@ -150,8 +150,15 @@ def main():
             exif_gps = image_exif[gps_dec_tag]
             latitude = (exif_gps[1], [d[0] / d[1] for d in exif_gps[2]])
             longitude = (exif_gps[3], [d[0] / d[1] for d in exif_gps[4]])
+            longitude = decimal_coord(longitude[1][0], longitude[1][1],
+                                      longitude[1][2], longitude[0])
+            latitude = decimal_coord(latitude[1][0], latitude[1][1],
+                                     latitude[1][2], latitude[0])
         except Exception:
-            return 'No GPS coordinates found!'
+            longitude = request.form['longitude']
+            latitude = request.form['latitude']
+            if not (longitude or latitude):
+                return 'No GPS coordinates found!'
 
         # Next Snap ID
         # Search for the maximum ID in the upload folder and increment it by 1.
@@ -180,10 +187,6 @@ def main():
         curs = conn.cursor()
         category = request.form['category']
         comment = request.form['comment']
-        longitude = decimal_coord(longitude[1][0], longitude[1][1],
-                                  longitude[1][2], longitude[0])
-        latitude = decimal_coord(latitude[1][0], latitude[1][1],
-                                 latitude[1][2], latitude[0])
         username = request.form['username']
         timestamp = datetime.datetime.utcnow()
         records = [(shot_id, category, comment, longitude, latitude, username,
