@@ -107,13 +107,14 @@ def main():
             return 'Picture unreadable!'
         image = Image.open(shot)
         image_exif = image._getexif()
-        orientation = image_exif[274]
-        if orientation == 8:
-            image = image.rotate(90)
-        elif orientation == 3:
-            image = image.rotate(180)
-        elif orientation == 6:
-            image = image.rotate(-90)
+        if(len(image_exif)>=274):
+            orientation = image_exif[274]
+            if orientation == 8:
+                image = image.rotate(90)
+            elif orientation == 3:
+                image = image.rotate(180)
+            elif orientation == 6:
+                image = image.rotate(-90)
 
         # check the extension
         shot_name, shot_extension = splitfilename(shot.filename)
