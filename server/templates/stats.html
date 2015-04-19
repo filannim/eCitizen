@@ -36,7 +36,7 @@
         var data = google.visualization.arrayToDataTable([
           ['TimeStamp', 'Number of entries'],
 		  {% for s in records %}
-          [{{s[6]}},  total_count=total_count+1 ],
+          ["{{s[6]}}",  total_count=total_count+1 ],
 		  {% endfor %}
         ]);
 
@@ -57,17 +57,17 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
 		{% for s in records %}
-          if({{s[1]}}=="graffity")
+          if("{{s[1]}}"=="graffiti")
 			graffity_count=graffity_count+1;
-		  if({{s[1]}}=="broken_streets")
+		  if("{{s[1]}}"=="broken_streets")
 			brokenStreet_count=brokenStreet_count+1;
-		  if({{s[1]}}=="broken_labels")
+		  if("{{s[1]}}"=="broken_labels")
 			brokenLabel_count=brokenLabel_count+1;
-		  if({{s[1]}}=="fire")
+		  if("{{s[1]}}"=="fire")
 			fire_count=fire_count+1;
-		  if({{s[1]}}=="lighting")
+		  if("{{s[1]}}"=="lighting")
 			lightning_count=lightning_count+1;
-		  if({{s[1]}}=="garbage")
+		  if("{{s[1]}}"=="garbage")
 			garbidge_count=garbidge_count+1;	
 			
 		{% endfor %}
