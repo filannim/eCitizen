@@ -69,24 +69,24 @@ def main():
         return render_template('heat_map.html', records=records)
 
     @app.route('/best_users')
-    def best_users():
+    def best_users(methods=['GET']):
         conn = sqlite3.connect('../db/snaps.db')
         curs = conn.cursor()
-        curs.execute('select * from TopContributors order by graffiti desc limit 5;')
-        graffiti = curs.fetchall()
-        curs.execute('select * from TopContributors order by broken_streets desc limit 5;')
-        broken_streets = curs.fetchall()
-        curs.execute('select * from TopContributors order by broken_labels desc limit 5;')
-        broken_labels = curs.fetchall()
-        curs.execute('select * from TopContributors order by fire desc limit 5;')
-        fire = curs.fetchall()
-        curs.execute('select * from TopContributors order by lightning desc limit 5;')
-        lightning = curs.fetchall()
-        curs.execute('select * from TopContributors order by garbage desc limit 5;')
-        garbage = curs.fetchall()
-        return render_template('contributors.html', graffiti=graffiti,broken_streets=broken_streets,broken_labels=broken_labels,fire=fire,lightning=lightning,garbage=garbage)	
-	
-	
+        category = request.args.get('category', 'all')
+        if category != 'all':
+            query = str('SELECT username, COUNT(*) FROM snaps WHERE ' +
+                        'category="{}" GROUP BY username ORDER BY ' +
+                        'username;').format(category)
+        else:
+            query = str('SELECT username, COUNT(*) FROM snaps GROUP BY ' +
+                        'username ORDER BY username;')
+        curs.execute(query)
+        records = curs.fetchall()
+        maximum = sum((r[1] for r in records))
+        category = category.replace('_', ' ').title()
+        return render_template('contributors.html', category=category,
+                               records=records, maximum=maximum)
+
     @app.route('/stats')
     def stats():
         conn = sqlite3.connect('../db/snaps.db')
@@ -107,7 +107,7 @@ def main():
             return 'Picture unreadable!'
         image = Image.open(shot)
         image_exif = image._getexif()
-        if(len(image_exif)>=274):
+        if(len(image_exif) >= 274):
             orientation = image_exif[274]
             if orientation == 8:
                 image = image.rotate(90)
@@ -158,28 +158,19 @@ def main():
         curs = conn.cursor()
         category = request.form['category']
         comment = request.form['comment']
-        longitude = decimal_coord(longitude[1][0], longitude[1][1], longitude[1][2], longitude[0])
-        latitude = decimal_coord(latitude[1][0], latitude[1][1], latitude[1][2], latitude[0])
+        longitude = decimal_coord(longitude[1][0], longitude[1][1],
+                                  longitude[1][2], longitude[0])
+        latitude = decimal_coord(latitude[1][0], latitude[1][1],
+                                 latitude[1][2], latitude[0])
         username = request.form['username']
         timestamp = datetime.datetime.utcnow()
         records = [(shot_id, category, comment, longitude, latitude, username,
                     timestamp)]
         curs.executemany('INSERT INTO snaps VALUES (?,?,?,?,?,?,?)', records)
         conn.commit()
-        curs.execute('SELECT '+category+' from TopContributors where username='+username)
-        records = curs.fetchall()
-        cat = 0
-        for r in records:
-            cat = r[0]+1
-        curs.execute("UPDATE TopContributors SET "+category+"=? WHERE username=?", (cat, username))        
-        conn.commit()
         conn.close()
 
         return redirect(url_for('thanks'))
-    
-	
-		
-	
 
     @app.route('/thanks')
     def thanks():
