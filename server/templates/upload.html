@@ -7,11 +7,49 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      #panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+    </style>
     <title>eCitizen: Post a picture</title>
 </head>
 <body class="gradient">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">eCitizen</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+          <li><a href="/upload_shot"><span class="label label-success"><strong>+</strong></span> upload a picture</a></li>
+            <li><a href="/map">map</a></li>
+            <li><a href="/heat">heat map</a></li>
+			<li><a href="/stats">statistics</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
     <div class="container-fluid">
-        <div class="page-header"><h1>Report your problem below: </h1></div>
+        <div class="page-header" style="margin-top:80px"><h1>Report your problem below: </h1></div>
         <section>
             <form enctype="multipart/form-data" method="post" action="/upload">
                 <div class="form-group">
@@ -63,5 +101,10 @@
             </form>
         </section>
     </div>
+	<div class="navbar-inverse navbar-fixed-bottom">
+      <div class="inner" style="text-align: center; color: white;">
+        <p>Michele, Nikola, Veselin and Yazan @ Great Uni Hackaton Manchester 2015.</p>
+      </div>
+    </div>  
 </body>
 </html>
