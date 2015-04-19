@@ -49,7 +49,9 @@
           {
               navigator.geolocation.getCurrentPosition(function(position) {
               var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          marker = new google.maps.Marker({
+              document.getElementById("latitude").value = position.coords.latitude;
+              document.getElementById("longitude").value = position.coords.longitude;       
+              marker = new google.maps.Marker({
                   map: map,
                   position: pos
               });
