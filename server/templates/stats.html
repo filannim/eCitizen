@@ -37,7 +37,7 @@
           ['TimeStamp', 'Number of entries'],
 		  {% for s in records %}
           [{{s[6]}},  total_count=total_count+1 ],
-		  {% endif %}
+		  {% endfor %}
         ]);
 
         var options = {
@@ -70,7 +70,7 @@
 		  if({{s[1]}}=="garbage")
 			garbidge_count=garbidge_count+1;	
 			
-		{% endif %}
+		{% endfor %}
 
         var data = google.visualization.arrayToDataTable([
           ['Problem', 'Number of Entries'],
