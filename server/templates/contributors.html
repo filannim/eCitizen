@@ -1,33 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <title>eCitizen: Heat-map</title>
+    <title>eCitizen: best citizens</title>
     <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
-      #panel {
-        position: absolute;
-        top: 5px;
-        left: 50%;
-        margin-left: -180px;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-      }
       body {
         padding-top: 70px;
       }
     </style>
-	 </head>
+  </head>
 
   <body>
 
@@ -48,7 +33,7 @@
             <li><a href="/map">map</a></li>
             <li><a href="/heat">heat map</a></li>
             <li><a href="/stats">statistics</a></li>
-            <li class="active"><a href="/best_users">best users</a></li>
+            <li class="active"><a href="/best_users">best citizens</a></li>
           </ul>
         </div>
       </div>
@@ -72,15 +57,23 @@
     </form>
 
     <h2>{{category}}</h2>
-     <div style="margin-left:20px">
+     <div>
      {% for user in records %}
-     {{user[0]}} <a href="token"><input type="image"  style="position: relative; left:10px;" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" class="paypalbtn" /></a>
-     <div class="progress">
-        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{user[1]*100/maximum|int}}" aria-valuemin="0" aria-valuemax="100" style="width: {{user[1]*100/maximum|int}}%;">{{user[1]}} posts
-        </div>
+     <div class="row">
+       <div class="col-xs-2 col-sm-2 col-lg-2">
+         {{user[0]}}
+       </div>
+       <div class="col-xs-9 col-sm-9 col-lg-9">
+         <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{user[1]*100/maximum|int}}" aria-valuemin="0" aria-valuemax="100" style="width: {{user[1]*100/maximum|int}}%;">{{user[1]}} posts
+            </div>
+         </div>
+       </div>
+      <div class="col-xs-1 col-sm-1 col-lg-1">
+         <a href="token"><input type="image"  style="position: relative; left:10px;" src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_donate_74x21.png" border="0" name="submit" alt="Paypal btn" class="paypalbtn" /></a>
       </div>
-     {% endfor %}
-
+    </div>
+    {% endfor %}
    </div>
  </div>
 
