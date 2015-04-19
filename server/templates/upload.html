@@ -7,48 +7,69 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js"></script>
-<script>
-    /* GET COORDINATES */
-    function codeLatLngfromclick(event) {
-        var lat = event.latLng.lat();
-        var lng = event.latLng.lng();
-        document.getElementById("latitude").value = lat;
-        document.getElementById("longitude").value = lng;
-    }
+    <script>
+      /* FILEBUTTON */
+      $(document).on('change', '.btn-file :file', function() {
+        var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+      });
 
-    /* GOOGLE MAPS */
-    function initialize() {
-        var mapProp = {
-            center:new google.maps.LatLng(0,0), zoom:5,
-            mapTypeId:google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-        
-        if(navigator.geolocation)
-        {
-            navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        marker = new google.maps.Marker({
-                map: map,
-                position: pos
-            });
+      $(document).ready( function() {
+        $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+          var input = $(this).parents('.input-group').find(':text'),
+              log = numFiles > 1 ? numFiles + ' files selected' : label;
+          
+          if( input.length ) {
+              input.val(log);
+          } else {
+              if( log ) alert(log);
+          }
+        });
+      });
 
-            map.setCenter(pos);
-            mapLoaded = 1;
-        }, function() {
-                defaultMap();
-            });
-        }
-        else
-        {
-            defaultMap();
-        }
+      /* GET COORDINATES */
+      function codeLatLngfromclick(event) {
+          var lat = event.latLng.lat();
+          var lng = event.latLng.lng();
+          document.getElementById("latitude").value = lat;
+          document.getElementById("longitude").value = lng;
+      }
 
-        google.maps.event.addListener(map, 'click', codeLatLngfromclick);
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-    navigator.geolocation.getCurrentPosition
-</script>
+      /* GOOGLE MAPS */
+      function initialize() {
+          var mapProp = {
+              center:new google.maps.LatLng(0,0), zoom:5,
+              mapTypeId:google.maps.MapTypeId.ROADMAP
+          };
+          var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+          
+          if(navigator.geolocation)
+          {
+              navigator.geolocation.getCurrentPosition(function(position) {
+              var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          marker = new google.maps.Marker({
+                  map: map,
+                  position: pos
+              });
+
+              map.setCenter(pos);
+              mapLoaded = 1;
+          }, function() {
+                  defaultMap();
+              });
+          }
+          else
+          {
+              defaultMap();
+          }
+
+          google.maps.event.addListener(map, 'click', codeLatLngfromclick);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+      navigator.geolocation.getCurrentPosition
+    </script>
     <style>
       html, body, #map-canvas {
         height: 100%;
