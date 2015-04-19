@@ -68,8 +68,23 @@ def main():
         records = curs.fetchall()
         return render_template('heat_map.html', records=records)
 
-
-        	
+    @app.route('/best_users')
+    def best_users():
+        conn = sqlite3.connect('../db/snaps.db')
+        curs = conn.cursor()
+        curs.execute('select * from TopContributors order by graffiti desc limit 5;')
+        graffiti = curs.fetchall()
+        curs.execute('select * from TopContributors order by broken_streets desc limit 5;')
+        broken_streets = curs.fetchall()
+        curs.execute('select * from TopContributors order by broken_labels desc limit 5;')
+        broken_labels = curs.fetchall()
+        curs.execute('select * from TopContributors order by fire desc limit 5;')
+        fire = curs.fetchall()
+        curs.execute('select * from TopContributors order by lightning desc limit 5;')
+        lightning = curs.fetchall()
+        curs.execute('select * from TopContributors order by garbage desc limit 5;')
+        garbage = curs.fetchall()
+        return render_template('contributors.html', graffiti=graffiti,broken_streets=broken_streets,broken_labels=broken_labels,fire=fire,lightning=lightning,garbage=garbage)	
 	
 	
     @app.route('/stats')
