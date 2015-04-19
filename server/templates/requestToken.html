@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Title of the document</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+</head>
+<body>
+<script>
+braintree.setup(
+ "{{token}}",
+  'dropin', {
+    container: 'dropin'
+  });
+
+var braintree = Braintree.create('MIIBCgKCAQEA48weSYg6L9o6EUFKZ4WZ4/x5WdQufP/pZ6B7bz0Zrv6isJh8hEOfHjJy+dkC+4liamtGLjbASJfaJxSrjW033Zg24UM95yUQ0YeLmWbU8lg/pq0sLxVitZkWVjlJC5M/i1mMIf++UNiz6o3h1sJbpIIrKRFC3Fg+zDHkVyOuJHp9q7LP4xBn3OextBRR+7VphlEoMiBwjY2nAmDJm/GBSvi6vn/iAJ/SVqfk2CXeMRoHw8QqVMsV/QweblGK9RlV3qhJ3f6Thb7DksiNTvPu1/WROZRyRXelx8czO0kQRap0BlK2QE2Kmymeg8hR1eOYeNphgO87gCvcACPWlkAaUQIDAQAB');
+</script>
+
+<form id="checkout" method="post" action="/purchases">
+  <div id="dropin"></div>
+  <input type="submit" value="Pay $10">
+</form>
+</body>
+</html>

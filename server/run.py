@@ -83,9 +83,9 @@ def main():
         curs.execute(query)
         records = curs.fetchall()
         maximum = sum((r[1] for r in records))
-        category = category.replace('_', ' ').title()
-        return render_template('contributors.html', category=category,
-                               records=records, maximum=maximum)
+        title_category = category.replace('_', ' ').title()
+        return render_template('contributors.html', category=title_category,
+                               records=records, maximum=maximum, selcat=category)
 
     @app.route('/stats')
     def stats():
