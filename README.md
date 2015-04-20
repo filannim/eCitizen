@@ -1,6 +1,6 @@
 # eCitizen
 
-Software platform that helps citizens notifying problems on their territory.
+Software platform that helps citizens reporting problems on their territory.
 
 ![eCitizen logo: an anonymous smart citizen with an urban abstract background](https://raw.githubusercontent.com/nikolamilosevic86/eCitizen/master/server/static/gfx/logo.png)
 
