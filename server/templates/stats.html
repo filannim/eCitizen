@@ -14,7 +14,7 @@
 
     <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
     <script src="/static/css_js/jquery.min.js"></script> 
-	<script type="text/javascript"
+  <script type="text/javascript"
           src="https://www.google.com/jsapi?autoload={
             'modules':[{
               'name':'visualization',
@@ -22,22 +22,22 @@
               'packages':['corechart']
             }]
           }"></script>
-		   <script type="text/javascript">
+       <script type="text/javascript">
       google.setOnLoadCallback(drawChart);
-	  var graffity_count = 0;
-	  var brokenStreet_count =0;
-	  var brokenLabel_count = 0;
-	  var fire_count =0;
-	  var lightning_count = 0;
-	  var garbidge_count = 0;
-	  var total_count = 0;
+    var graffity_count = 0;
+    var brokenStreet_count =0;
+    var brokenLabel_count = 0;
+    var fire_count =0;
+    var lightning_count = 0;
+    var garbidge_count = 0;
+    var total_count = 0;
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['TimeStamp', 'Number of entries'],
-		  {% for s in records %}
+      {% for s in records %}
           ["{{s[6]}}",  total_count=total_count+1 ],
-		  {% endfor %}
+      {% endfor %}
         ]);
 
         var options = {
@@ -51,26 +51,26 @@
         chart.draw(data, options);
       }
     </script>
-	 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
-		{% for s in records %}
+    {% for s in records %}
           if("{{s[1]}}"=="graffiti")
-			graffity_count=graffity_count+1;
-		  if("{{s[1]}}"=="broken_streets")
-			brokenStreet_count=brokenStreet_count+1;
-		  if("{{s[1]}}"=="broken_labels")
-			brokenLabel_count=brokenLabel_count+1;
-		  if("{{s[1]}}"=="fire")
-			fire_count=fire_count+1;
-		  if("{{s[1]}}"=="lighting")
-			lightning_count=lightning_count+1;
-		  if("{{s[1]}}"=="garbage")
-			garbidge_count=garbidge_count+1;	
-			
-		{% endfor %}
+      graffity_count=graffity_count+1;
+      if("{{s[1]}}"=="broken_streets")
+      brokenStreet_count=brokenStreet_count+1;
+      if("{{s[1]}}"=="broken_labels")
+      brokenLabel_count=brokenLabel_count+1;
+      if("{{s[1]}}"=="fire")
+      fire_count=fire_count+1;
+      if("{{s[1]}}"=="lighting")
+      lightning_count=lightning_count+1;
+      if("{{s[1]}}"=="garbage")
+      garbidge_count=garbidge_count+1;  
+      
+    {% endfor %}
 
         var data = google.visualization.arrayToDataTable([
           ['Problem', 'Number of Entries'],
@@ -79,7 +79,7 @@
           ['Broken labels',  brokenLabel_count],
           ['Fire', fire_count],
           ['Lighting',    lightning_count],
-		  ['Garbage',    garbidge_count],
+      ['Garbage',    garbidge_count],
         ]);
 
         var options = {
@@ -91,12 +91,12 @@
         chart.draw(data, options);
       }
     </script>
-	</head>
-	<body>
-	
-	
-	</body>
-	  <nav class="navbar navbar-inverse navbar-fixed-top">
+  </head>
+  <body>
+  
+  
+  </body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -120,8 +120,8 @@
     </nav>
     
     <div id="curve_chart" style="width: 900px; height: 500px"></div>
-	
-	 <div id="piechart" style="width: 900px; height: 500px;"></div>
+  
+   <div id="piechart" style="width: 900px; height: 500px;"></div>
 
     <!-- FOOTER -->
     <div class="navbar-inverse navbar-fixed-bottom">

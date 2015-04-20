@@ -1,140 +1,27 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <title>eCitizen: the conscientious citizen</title>
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
-      #panel {
-        position: absolute;
-        top: 5px;
-        left: 50%;
-        margin-left: -180px;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-      }
-      body {
-        padding-top: 70px;
-      }
-      .jumbotron {
-        text-align: center;
-        background-color: transparent;
-      }
-      .jumbotron .btn {
-        padding: 14px 24px;
-        font-size: 21px;
-      }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
-    <script>
-      // Adding data points
-      var map, pointarray, heatmap;
-      var taxiData = [
-        {% for s in records %}
-          new google.maps.LatLng({{s[4]}},{{s[3]}}),
-        {%endfor %}
-      ];
+{% set active_page = 'index' %}
+{% extends "base.html" %}
 
-      function initialize() {
-        var mapOptions = {
-          zoom: 14,
-          center: new google.maps.LatLng(53.4793,-2.2479),
-          mapTypeId: google.maps.MapTypeId.SATELLITE
-        };
+{% block title %}the conscientious citizen{% endblock %}
+{% block style %}
+<style>
+  html, body, #map-canvas {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+  }
+  .jumbotron {
+    text-align: center;
+    background-color: transparent;
+  }
+  .jumbotron .btn {
+    padding: 14px 24px;
+    font-size: 21px;
+  }
+</style>
+{% endblock %}
 
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-        mapOptions);
-
-        var pointArray = new google.maps.MVCArray(taxiData);
-
-        heatmap = new google.maps.visualization.HeatmapLayer({
-          data: pointArray
-        });
-
-        heatmap.setMap(map);
-      }
-
-      function toggleHeatmap() {
-        heatmap.setMap(heatmap.getMap() ? null : map);
-      }
-
-      function changeGradient() {
-        var gradient = [
-          'rgba(0, 255, 255, 0)',
-          'rgba(0, 255, 255, 1)',
-          'rgba(0, 191, 255, 1)',
-          'rgba(0, 127, 255, 1)',
-          'rgba(0, 63, 255, 1)',
-          'rgba(0, 0, 255, 1)',
-          'rgba(0, 0, 223, 1)',
-          'rgba(0, 0, 191, 1)',
-          'rgba(0, 0, 159, 1)',
-          'rgba(0, 0, 127, 1)',
-          'rgba(63, 0, 91, 1)',
-          'rgba(127, 0, 63, 1)',
-          'rgba(191, 0, 31, 1)',
-          'rgba(255, 0, 0, 1)'
-        ]
-        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-      }
-
-      function changeRadius() {
-        heatmap.set('radius', heatmap.get('radius') ? null : 50);
-      }
-
-      function changeOpacity() {
-        heatmap.set('opacity', heatmap.get('opacity') ? null : 0.3);
-      }
-
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-  </head>
-
-  <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">eCitizen</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-          <li><a href="/upload_shot">report <span class="label label-success label-as-badge">+1</span></a></li>
-            <li><a href="/map">map</a></li>
-            <li><a href="/heat">heat map</a></li>
-            <li><a href="/stats">statistics</a></li>
-            <li><a href="/best_users">best citizens</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Docs page layout -->
-    <div class="jumbotron" style="">
-      <img class="img-rounded" height="400" src="/static/gfx/logo.png" />
-    </div>
-    
-    <div class="navbar-inverse navbar-fixed-bottom">
-      <div style="text-align: center; color: white;">
-        <p class="small">Michele, Nikola, Veselin and Yazan @ GreatUniHack, Manchester, 2015.</p>
-      </div>
-    </div> 
-
-  </body>
-</html>
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-lg-12">
+  <img class="img-responsive img-rounded" src="/static/gfx/logo.png" />
+</div>
+{% endblock %}

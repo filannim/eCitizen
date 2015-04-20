@@ -1,0 +1,70 @@
+{% set navigation_bar = [
+  ('/upload_shot', 'upload_shot', 'report <span class="label label-success label-as-badge">+1</span>'),
+  ('/map', 'map', 'map'),
+  ('/heat', 'heat', 'heat map'),
+  ('/stats', 'stats', 'statistics'),
+  ('/best_users', 'best_users', 'best citizens')
+] -%}
+{% set active_page = active_page|default('index') -%}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <link rel="stylesheet" href="/static/css_js/magnific-popup.css">
+    <script src="/static/css_js/magnific-popup.js"></script>
+    {% block script %}{% endblock %}
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      body {
+        margin-top: 50px;
+      }
+    </style>
+    {% block style %}{% endblock %}
+    <title>eCitizen: {% block title %}{% endblock %}</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">eCitizen</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% for href, id, caption in navigation_bar %}
+            <li{% if id == active_page %} class="active"{% endif %}><a href="{{href|e}}">{{caption|safe}}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block container %}{% endblock %}
+    <div class="container-fluid">
+        {% block content %}{% endblock %}
+    </div>
+
+      <div class="navbar-inverse navbar-fixed-bottom" style="padding-top: -200px;">
+        <div style="text-align: center; color: white;">
+          <p class="small">Michele, Nikola, Veselin and Yazan @ GreatUniHack, Manchester, 2015.</p>
+        </div>
+      </div>
+
+  </body>
+</html>
