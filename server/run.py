@@ -102,7 +102,8 @@ def main():
     def create_purchase():
         nonce = request.form["payment_method_nonce"]
         result = braintree.Transaction.sale({"amount": "10.00","payment_method_nonce": nonce})
-        return "Thank you!"
+		
+        return "Thank you"
 
     # e.g f28w
     #----------------------------------						   
