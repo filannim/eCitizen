@@ -52,50 +52,7 @@
         </div><!--/.nav-collapse -->
     </nav>
 
-<<<<<<< HEAD
-   <h2 style="margin-top:100px;margin-left:20px">Top users</h2>
-   
-   <h3 style="margin-left:20px">Graffiti</h3>
-   <div style="margin-left:20px">
-   {% for g in graffiti %}
-   {{loop.index}} {{g[1]}} : {{g[2]}}  <a href="client_token"><input type="image"  style="position: relative; left:10px; top:10px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" class="paypalbtn" /></a> <br/>
-   {% endfor %}
-   </div>
-   
-   <h3 style="margin-left:20px">Broken Streets</h3>
-   <div style="margin-left:20px">
-   {% for g in broken_streets %}
-   {{loop.index}} {{g[1]}} : {{g[3]}} <a href="client_token"><input type="image" style="position: relative; left:10px; top:10px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" /></a><br/>
-   {% endfor %}
-   </div>
-   
-   <h3 style="margin-left:20px">Broken Labels</h3>
-   <div style="margin-left:20px">
-   {% for g in broken_labels %}
-   {{loop.index}} {{g[1]}} : {{g[4]}}  <input type="image" onclick="location.href = 'requestToken.html';" style="position: relative; left:10px; top:10px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" /><br/>
-   {% endfor %}
-   </div>
-   
-   <h3 style="margin-left:20px">Fire</h3>
-   <div style="margin-left:20px">
-   {% for g in fire %}
-   {{loop.index}} {{g[1]}} : {{g[5]}}  <input type="image" onclick="location.href = 'requestToken.html';" style="position: relative; left:10px; top:10px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" /><br/>
-   {% endfor %}
-   </div>
-   
-   <h3 style="margin-left:20px">Lightning</h3>
-   <div style="margin-left:20px">
-   {% for g in lightning %}
-   {{loop.index}} {{g[1]}} : {{g[6]}}   <input type="image" onclick="location.href = 'requestToken.html';" style="position: relative; left:10px; top:10px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" /><br/>
-   {% endfor %}
-   </div>
-   
-   <h3 style="margin-left:20px">Garbage</h3>
-   <div style="margin-left:20px;margin-bottom:100px">
-   {% for g in garbage %}
-   {{loop.index}} {{g[1]}} : {{g[7]}}   <input type="image" onclick="location.href = 'requestToken.html';" style="position: relative; left:10px; top:10px" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Paypal btn" /><br/>
-   {% endfor %}
-=======
+
     <div class="container">
     <h1>Top users</h1>
     <hr>
@@ -123,7 +80,6 @@
       </div>
      {% endfor %}
     </ul>
->>>>>>> origin/master
    </div>
  </div>
       <div class="inner" style="text-align: center; color: white;">
