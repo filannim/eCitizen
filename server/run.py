@@ -137,7 +137,7 @@ def main():
             return 'Picture unreadable!'
         image = Image.open(shot)
         image_exif = image._getexif()
-        if(image_exif!=None && len(image_exif) >= 274):
+        if(image_exif!=None and len(image_exif) >= 274):
             orientation = image_exif[274]
             if orientation == 8:
                 image = image.rotate(90)
