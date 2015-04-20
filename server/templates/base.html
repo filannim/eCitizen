@@ -1,7 +1,7 @@
 {% set navigation_bar = [
   ('/upload_shot', 'upload_shot', 'report <span class="label label-success label-as-badge">+1</span>'),
   ('/map', 'map', 'map'),
-  ('/heat', 'heat', 'heat map'),
+  ('/heat', 'heat_map', 'heat map'),
   ('/stats', 'stats', 'statistics'),
   ('/best_users', 'best_users', 'best citizens')
 ] -%}
@@ -16,8 +16,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js"></script>
-    <link rel="stylesheet" href="/static/css_js/magnific-popup.css">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
+    <!-- Magnific PopUp -->
+    <link rel="stylesheet" href="/static/css_js/magnific-popup.css" />
     <script src="/static/css_js/magnific-popup.js"></script>
+    <!-- Bootstrap Slider -->
+    <link rel="stylesheet" href="/static/css_js/slider.css" />
+    <script src="/static/css_js/bootstrap-slider.js"></script>
     {% block script %}{% endblock %}
     <style>
       html, body {
@@ -51,6 +56,7 @@
             <li{% if id == active_page %} class="active"{% endif %}><a href="{{href|e}}">{{caption|safe}}</a></li>
             {% endfor %}
           </ul>
+          {% block nav %}{% endblock %}
         </div>
       </div>
     </nav>
