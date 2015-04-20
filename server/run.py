@@ -37,7 +37,7 @@ def main():
     # Web server initialisation
     app = Flask("boo")
     app.config['UPL_FOLDER'] = UPL_FOLDER
-    app.debug = True
+    app.debug = False
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
 
     braintree.Configuration.configure(braintree.Environment.Sandbox,
@@ -204,7 +204,7 @@ def main():
         # business recommendation
         return render_template('thanks.html')
 
-    app.run(host="127.0.0.1", port=5010, use_reloader=True)
+    app.run(host="130.88.192.69", port=5010, use_reloader=True)
 
 if __name__ == '__main__':
     main()
