@@ -93,6 +93,10 @@ def main():
     @app.route("/client_token", methods=["GET"])
     def client_token():
         return braintree.ClientToken.generate()
+    @app.route('/token')
+    def token():
+       token = client_token()
+       return render_template('requestToken.html',token=token)
     
     @app.route("/purchases", methods=["POST"])
     def create_purchase():
