@@ -128,25 +128,24 @@ def main():
             return 'Picture unreadable!'
         image = Image.open(shot)
 
+        image_exif = image._getexif()
+
+        orientation = image_exif[274]
+        if orientation == 8:
+            image = image.rotate(90)
+        elif orientation == 3:
+            image = image.rotate(180)
+        elif orientation == 6:
+            image = image.rotate(-90)
+
+        # check the extension
+        shot_name, shot_extension = splitfilename(shot.filename)
+        if shot_extension.lower() not in ALLOWED_EXTENSIONS:
+            return '.{} format not allowed!'.format(shot_extension.upper())
+
+        # check the GPS coordinates
+        gps_dec_tag = 34853
         try:
-            image_exif = image._getexif()
-
-            orientation = image_exif[274]
-            if orientation == 8:
-                image = image.rotate(90)
-            elif orientation == 3:
-                image = image.rotate(180)
-            elif orientation == 6:
-                image = image.rotate(-90)
-
-            # check the extension
-            shot_name, shot_extension = splitfilename(shot.filename)
-            if shot_extension.lower() not in ALLOWED_EXTENSIONS:
-                return '.{} format not allowed!'.format(shot_extension.upper())
-
-            # check the GPS coordinates
-            gps_dec_tag = 34853
-            latitude, longitude = None, None
             exif_gps = image_exif[gps_dec_tag]
             latitude = (exif_gps[1], [d[0] / d[1] for d in exif_gps[2]])
             longitude = (exif_gps[3], [d[0] / d[1] for d in exif_gps[4]])
@@ -154,7 +153,9 @@ def main():
                                       longitude[1][2], longitude[0])
             latitude = decimal_coord(latitude[1][0], latitude[1][1],
                                      latitude[1][2], latitude[0])
-        except Exception:
+        except KeyError:
+            # the GPS coordinate decimal tag is not found in the picture
+            # read from the upload form
             longitude = request.form['longitude']
             latitude = request.form['latitude']
             if not (longitude or latitude):
