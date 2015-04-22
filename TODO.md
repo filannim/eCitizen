@@ -5,6 +5,6 @@ This document lists all the things I should look more carefully in the future.
 
 - [ ] the upload module should store just one resized picture.
 - [ ] user registration using social log in
-- [ ] store the categories in the DB
+- [ ] store the categories in the DB (pollution, pavement, graffiti, tree, flyposting, litter, light, name sign, syringes, abandoned building, pothole, street furniture) [sources: [Manchester City Council](), [London City Council](https://www.gov.uk/browse/housing-local-services/recycling-rubbish)]
 - [x] use Jinja2 templates ihneritance to avoid redundand code
 - [x] automatic centering of the maps according to the current coordinates
