@@ -130,13 +130,16 @@ def main():
 
         image_exif = image._getexif()
 
-        orientation = image_exif[274]
-        if orientation == 8:
-            image = image.rotate(90)
-        elif orientation == 3:
-            image = image.rotate(180)
-        elif orientation == 6:
-            image = image.rotate(-90)
+        try:
+            orientation = image_exif[274]
+            if orientation == 8:
+                image = image.rotate(90)
+            elif orientation == 3:
+                image = image.rotate(180)
+            elif orientation == 6:
+                image = image.rotate(-90)
+        except TypeError:
+            pass
 
         # check the extension
         shot_name, shot_extension = splitfilename(shot.filename)
@@ -153,7 +156,7 @@ def main():
                                       longitude[1][2], longitude[0])
             latitude = decimal_coord(latitude[1][0], latitude[1][1],
                                      latitude[1][2], latitude[0])
-        except KeyError:
+        except (KeyError, TypeError):
             # the GPS coordinate decimal tag is not found in the picture
             # read from the upload form
             longitude = request.form['longitude']
