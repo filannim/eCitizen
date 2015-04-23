@@ -207,7 +207,7 @@ def main():
         # business recommendation
         return render_template('thanks.html')
 
-    app.run(host="127.0.0.1", port=5010, use_reloader=True)
+    app.run(host="130.88.192.69", port=5010, use_reloader=True)
 
 if __name__ == '__main__':
     main()
