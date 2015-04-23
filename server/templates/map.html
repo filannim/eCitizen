@@ -40,7 +40,7 @@
       google.maps.event.addListener(marker{{loop.index}}, 'click', function() {
       $.magnificPopup.open({
         items: {
-          src: '<div width="450px" height="800px" class="white-popup" style="padding: 5px;"><img width="400px" src="/static/pictures/{{s[0]}}" class="img-thumbnail" style="margin-bottom: 30px;" /><div style="background: white; padding: 10px"><p>Problem: <span class="label label-primary">{{s[1]}}</span></p><blockquote><p>{{s[2]}}</p></div></blockquote></div>', 
+          src: '<div width="450px" height="800px" class="thumbnail" style="padding: 5px;"><img width="400px" src="/static/pictures/{{s[0]}}" style="margin-bottom: 30px;" /><h3>{{s[1]}}</h3><p>{{s[2]}}</p></div>', 
             },
             type: 'inline'
         });
