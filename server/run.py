@@ -177,13 +177,13 @@ def main():
         shot_id = str(shot_id + 1) + ".jpg"
 
         # store the picture
-        image.save(os.path.join(app.config['UPL_FOLDER'], shot_id), "JPEG")
+        # image.save(os.path.join(app.config['UPL_FOLDER'], shot_id), "JPEG")
 
-        # store its thumbnail
-        scaling = image.size[1] / 100
-        thumb_size = (int(image.size[0] / scaling), 100)
+        # store its thumbnail (width=500px)
+        scaling = image.size[1] / 500
+        thumb_size = (int(image.size[0] / scaling), 500)
         image.thumbnail(thumb_size, Image.ANTIALIAS)
-        image.save(os.path.join(app.config['UPL_FOLDER'], 'thumbnails',
+        image.save(os.path.join(app.config['UPL_FOLDER'], 'pictures',
                                 shot_id), "JPEG")
 
         # add a record to the DB
@@ -207,7 +207,8 @@ def main():
         # business recommendation
         return render_template('thanks.html')
 
-    app.run(host="130.88.192.69", port=5010, use_reloader=True)
+    app.run(host="127.0.0.1", port=5010, use_reloader=True)
+    # app.run(host="130.88.192.69", port=5010, use_reloader=True)
 
 if __name__ == '__main__':
     main()
