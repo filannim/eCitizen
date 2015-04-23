@@ -37,7 +37,7 @@ def main():
     # Web server initialisation
     app = Flask("boo")
     app.config['UPL_FOLDER'] = UPL_FOLDER
-    app.debug = True
+    app.debug = False
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
 
     braintree.Configuration.configure(braintree.Environment.Sandbox,
