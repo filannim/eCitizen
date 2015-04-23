@@ -37,7 +37,7 @@ def main():
     # Web server initialisation
     app = Flask("boo")
     app.config['UPL_FOLDER'] = UPL_FOLDER
-    app.debug = False
+    app.debug = True
     app.secret_key = 'A0Zr85j/3yX-R~XFH!jmN]31X/,?RT'
 
     braintree.Configuration.configure(braintree.Environment.Sandbox,
@@ -130,13 +130,16 @@ def main():
 
         image_exif = image._getexif()
 
-        orientation = image_exif[274]
-        if orientation == 8:
-            image = image.rotate(90)
-        elif orientation == 3:
-            image = image.rotate(180)
-        elif orientation == 6:
-            image = image.rotate(-90)
+        try:
+            orientation = image_exif[274]
+            if orientation == 8:
+                image = image.rotate(90)
+            elif orientation == 3:
+                image = image.rotate(180)
+            elif orientation == 6:
+                image = image.rotate(-90)
+        except TypeError:
+            pass
 
         # check the extension
         shot_name, shot_extension = splitfilename(shot.filename)
@@ -153,7 +156,7 @@ def main():
                                       longitude[1][2], longitude[0])
             latitude = decimal_coord(latitude[1][0], latitude[1][1],
                                      latitude[1][2], latitude[0])
-        except KeyError:
+        except (KeyError, TypeError):
             # the GPS coordinate decimal tag is not found in the picture
             # read from the upload form
             longitude = request.form['longitude']
@@ -204,7 +207,7 @@ def main():
         # business recommendation
         return render_template('thanks.html')
 
-    app.run(host="127.0.0.1", port=5010, use_reloader=True)
+    app.run(host="130.88.192.69", port=5010, use_reloader=True)
 
 if __name__ == '__main__':
     main()
